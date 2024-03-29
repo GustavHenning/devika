@@ -1,6 +1,13 @@
 <script>
-  import { onMount } from 'svelte';
-  import { selectedProject, selectedModel, projectList, modelList, internet } from '$lib/store';
+  import { onMount } from "svelte";
+  import {
+    selectedProject,
+    selectedModel,
+    projectList,
+    modelList,
+    modelCount,
+    internet,
+  } from "$lib/store";
   import { createProject, fetchProjectList, getTokenUsage } from "$lib/api";
   import Dropdown from "./ui/Dropdown.svelte";
 
@@ -11,7 +18,7 @@
   }
 
   async function createNewProject() {
-    const projectName = prompt('Enter the project name:');
+    const projectName = prompt("Enter the project name:");
     if (projectName) {
       await createProject(projectName);
       await fetchProjectList();
@@ -26,7 +33,11 @@
 </script>
 
 <div class="control-panel bg-slate-900 border border-indigo-700 rounded">
-  <Dropdown options={Object.fromEntries($projectList.map((x) => [x, x]))} label="Select Project" bind:selection={$selectedProject}>
+  <Dropdown
+    options={Object.fromEntries($projectList.map((x) => [x, x]))}
+    label="Select Project"
+    bind:selection={$selectedProject}
+  >
     <div slot="prefix-entries" let:closeDropdown={close}>
       <button
         class="text-white block px-4 py-2 text-sm hover:bg-slate-700 w-full text-left overflow-clip"
@@ -45,8 +56,17 @@
   >
     <div class="flex items-center space-x-2">
       <span>Internet:</span>
-      <div id="internet-status" class="internet-status" class:online={$internet} class:offline={!$internet} />
+      <div
+        id="internet-status"
+        class="internet-status"
+        class:online={$internet}
+        class:offline={!$internet}
+      />
       <span id="internet-status-text" />
+    </div>
+    <div class="flex items-center space-x-2">
+      <span>Ollama models:</span>
+      <span>{$modelCount}</span>
     </div>
     <div class="flex items-center space-x-2">
       <span>Token Usage:</span>
@@ -54,7 +74,9 @@
     </div>
     <div class="relative inline-block text-left">
       <Dropdown
-        options={Object.fromEntries($modelList.map(([name, id]) => [id, `${name} (${id})`]))}
+        options={Object.fromEntries(
+          $modelList.map(([name, id]) => [id, `${name} (${id})`]),
+        )}
         label="Select Model"
         bind:selection={$selectedModel}
       />

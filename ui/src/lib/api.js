@@ -3,6 +3,7 @@ import {
   internet,
   messages,
   modelList,
+  modelCount,
   projectList,
 } from "./store";
 
@@ -44,6 +45,12 @@ export async function fetchModelList() {
   const response = await fetch(`${API_BASE_URL}/api/model-list`);
   const data = await response.json();
   modelList.set(data.models);
+}
+
+export async function fetchOllamaCount() {
+  const response = await fetch(`${API_BASE_URL}/api/ollama-list`);
+  const data = await response.json();
+  modelCount.set(data.models.length);
 }
 
 export async function fetchAgentState() {

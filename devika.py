@@ -80,7 +80,7 @@ def download_project_pdf():
     pdf_path = os.path.join(pdf_dir, f"{project_name}.pdf")
 
     response = make_response(send_file(pdf_path))
-    response.headers['Content-Type'] = 'application/pdf'
+    response.headers["Content-Type"] = "application/pdf"
     return response
 
 
@@ -108,7 +108,9 @@ def send_message():
 
     if AgentState().is_agent_completed(project_name):
         thread = Thread(
-            target=lambda: Agent(base_model=base_model).subsequent_execute(message, project_name)
+            target=lambda: Agent(base_model=base_model).subsequent_execute(
+                message, project_name
+            )
         )
         thread.start()
 
@@ -127,6 +129,13 @@ def project_list():
 @route_logger(logger)
 def model_list():
     models = LLM().list_models()
+    return jsonify({"models": models})
+
+
+@app.route("/api/ollama-list", methods=["GET"])
+@route_logger(logger)
+def ollama_list():
+    models = LLM().list_ollama()
     return jsonify({"models": models})
 
 

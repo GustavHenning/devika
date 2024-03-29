@@ -21,6 +21,7 @@ export const projectList = writable([]);
 
 export const selectedModel = writable(getInitialSelectedModel());
 export const modelList = writable([]);
+export const modelCount = writable(0);
 
 export const agentState = writable(null);
 

@@ -9,6 +9,7 @@
   import {
     fetchProjectList,
     fetchModelList,
+    fetchOllamaCount,
     fetchAgentState,
     fetchMessages,
     checkInternetStatus,
@@ -20,6 +21,7 @@
     const intervalId = setInterval(async () => {
       await fetchProjectList();
       await fetchModelList();
+      await fetchOllamaCount();
       await fetchAgentState();
       await fetchMessages();
       await checkInternetStatus();
